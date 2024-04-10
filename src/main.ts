@@ -5,14 +5,14 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const logger = new Logger('Main');
+  const logger = new Logger('Main - Products');
 
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.NATS,
       options: {
-        port: envs.port,
+        servers: envs.natsServers,
       },
     },
   );
@@ -24,5 +24,8 @@ async function bootstrap() {
   );
   await app.listen();
   logger.log(`Products MicroService running on port: ${envs.port}`);
+  logger.log(
+    `Products MicroService connected to NATS Server on: ${envs.natsServers.map((s) => s.toLowerCase()).join(', ')}`,
+  );
 }
 bootstrap();

@@ -16,13 +16,13 @@ export class ProductsController {
   }
 
   //@Get()
-  @MessagePattern({ cmd: 'find_all_product' })
+  @MessagePattern({ cmd: 'find_all_products' })
   findAll() {
     return this.productsService.findAll();
   }
 
   //@Get('/paged')
-  @MessagePattern({ cmd: 'find_all_paged_product' })
+  @MessagePattern({ cmd: 'find_all_paged_products' })
   findAllPaged(@Payload() paginationDto: PaginationDto) {
     return this.productsService.findAllPaged(paginationDto);
   }
@@ -47,5 +47,10 @@ export class ProductsController {
   @MessagePattern({ cmd: 'delete_product' })
   remove(@Payload('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
+  }
+
+  @MessagePattern({ cmd: 'validate_products' })
+  validateProducts(@Payload() ids: number[]) {
+    return this.productsService.validateProducts(ids);
   }
 }
